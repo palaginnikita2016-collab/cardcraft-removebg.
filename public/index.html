@@ -258,6 +258,26 @@
       line-height:1.45
     }
 
+    .accountSection{margin-top:18px}
+    .accountBox{padding:24px}
+    .accountHead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}
+    .accountTitle{margin:0 0 8px;font-size:28px}
+    .accountLead{margin:0;color:var(--muted);line-height:1.6;max-width:760px}
+    .accountGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+    .accountPane{padding:18px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .accountName{font-size:26px;font-weight:900;line-height:1.05;margin:6px 0 10px}
+    .accountHint{margin-top:10px;color:#bfd4ff;font-size:13px;line-height:1.5}
+    .accountMiniGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+    .statCard{padding:16px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+    .statLabel{font-size:12px;color:var(--muted);margin-bottom:8px}
+    .statValue{font-size:24px;font-weight:900;line-height:1}
+    .balancePills{display:flex;gap:10px;flex-wrap:wrap}
+    .balancePill{padding:10px 12px;border-radius:999px;background:rgba(103,182,255,.12);border:1px solid rgba(103,182,255,.25);font-size:13px;font-weight:800;color:#d8efff}
+    .loginWrap{min-height:52px}
+    .accountActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .priceAction{display:block;width:100%;margin-top:14px;text-align:center;text-decoration:none}
+
+
     .feature,.price{padding:20px}
     .feature h3,.price h3{margin:12px 0 8px}
     .icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:rgba(103,182,255,.12);border:1px solid rgba(103,182,255,.25);font-size:22px}
@@ -270,7 +290,7 @@
     .hidden{display:none !important}
 
     @media (max-width: 1080px){
-      .hero,.editorSection,.features,.pricing,.contactsList{grid-template-columns:1fr}
+      .hero,.editorSection,.features,.pricing,.contactsList,.accountGrid,.accountMiniGrid{grid-template-columns:1fr}
       .heroGrid{grid-template-columns:1fr}
       .previewCard{position:static}
     }
@@ -300,6 +320,7 @@
         <a class="pill" href="#editor">Редактор</a>
         <a class="pill" href="#features">Возможности</a>
         <a class="pill" href="#pricing">Тарифы</a>
+        <a class="pill" href="#account">Аккаунт</a>
         <a class="pill" href="#contacts">Контакты</a>
       </div>
     </div>
@@ -344,6 +365,54 @@
     </section>
 
 
+
+    <section id="account" class="accountSection">
+      <div class="card accountBox">
+        <div class="accountHead">
+          <div>
+            <div class="kicker">🔐 Аккаунт через Telegram</div>
+            <h2 class="accountTitle">Остаток пакетов сохраняется в аккаунте</h2>
+            <p class="accountLead">Войди через Telegram, чтобы хранить остаток карточек и AI-удалений фона. Бесплатный старт можно забрать один раз, а дальше остатки будут считаться в базе.</p>
+          </div>
+          <div class="balancePills" id="balancePills" hidden>
+            <div class="balancePill" id="cardsLeftPill">Карточек: 0</div>
+            <div class="balancePill" id="bgLeftPill">Удалений фона: 0</div>
+          </div>
+        </div>
+
+        <div class="accountGrid">
+          <div class="accountPane">
+            <div class="groupTitle">Вход</div>
+            <div class="loginWrap" id="tgLoginWrap"></div>
+            <div class="tiny" id="authHint">Сейчас ты как гость. Войди через Telegram, чтобы мы могли сохранять остаток пакетов между заходами.</div>
+            <div class="accountActions">
+              <button id="claimFreeBtn" class="ghostBtn">Забрать 3 бесплатные карточки</button>
+              <button id="logoutBtn" class="ghostBtn">Выйти</button>
+            </div>
+          </div>
+
+          <div class="accountPane">
+            <div class="small">Текущий аккаунт</div>
+            <div class="accountName" id="accountName">Гость</div>
+            <div class="sub" id="accountNote">После входа здесь появится твой аккаунт и остаток пакетов.</div>
+
+            <div class="accountMiniGrid">
+              <div class="statCard">
+                <div class="statLabel">Карточек осталось</div>
+                <div class="statValue" id="cardsLeftStat">0</div>
+              </div>
+              <div class="statCard">
+                <div class="statLabel">AI-удалений фона</div>
+                <div class="statValue" id="bgLeftStat">0</div>
+              </div>
+            </div>
+
+            <div class="accountHint">Списание работает так: сохранение карточки уменьшает остаток карточек на 1, а автоматическое удаление фона уменьшает остаток AI-удалений на 1.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="editor" class="editorSection">
       <div class="card panel">
         <h2>Редактор</h2>
@@ -359,7 +428,7 @@
           <button id="aiRemoveBtn" class="ghostBtn" style="width:100%">Убрать фон автоматически</button>
           <input id="photoInput" type="file" accept="image/*" />
           <div class="tiny" id="fileStatus">Файл ещё не загружен.</div>
-          <div class="tiny" id="bgRemoveStatus">Загрузи фото и нажми кнопку выше. Сервис аккуратно уберёт фон и вернёт готовое изображение.</div>
+          <div class="tiny" id="bgRemoveStatus">Загрузи фото и нажми кнопку выше. Сервис аккуратно уберёт фон и вернёт готовое изображение. Для работы счётчика войди через Telegram.</div>
         </div>
 
         <div class="group">
@@ -455,7 +524,7 @@
             <button id="downloadPng">Скачать в PNG</button>
             <button id="downloadJpg" class="btnSecondary">Скачать в JPG</button>
           </div>
-          <div class="tiny">Выбери формат, который тебе удобнее сохранить или отправить.</div>
+          <div class="tiny">Сохранение карточки спишет 1 карточку из остатка. Если не вошёл в аккаунт — сначала войди через Telegram.</div>
         </div>
       </div>
 
@@ -500,24 +569,28 @@
         <div class="big">0 ₽</div>
         <p>3 бесплатные карточки, чтобы спокойно попробовать сервис.</p>
         <div class="tiny">Без подписки • Для первого знакомства</div>
+        <button class="ghostBtn priceAction" id="claimFreePricingBtn">Забрать бесплатно</button>
       </div>
       <div class="card price">
         <h3>Мини</h3>
         <div class="big">99 ₽</div>
         <p>10 карточек + 5 AI-удалений фона бонусом.</p>
         <div class="tiny">Остаток сохраняется в аккаунте</div>
+        <a class="ghostBtn priceAction" target="_blank" rel="noopener noreferrer" href="https://t.me/popkazana?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BA%D1%83%D0%BF%D0%B8%D1%82%D1%8C%20%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%20%D0%9C%D0%B8%D0%BD%D0%B8%20%D0%B7%D0%B0%2099%20%D1%80%D1%83%D0%B1%D0%BB%D0%B5%D0%B9">Купить через Telegram</a>
       </div>
       <div class="card price">
         <h3>База</h3>
         <div class="big">299 ₽</div>
         <p>50 карточек + 20 AI-удалений фона бонусом.</p>
         <div class="tiny">Лучший вариант для регулярной работы</div>
+        <a class="ghostBtn priceAction" target="_blank" rel="noopener noreferrer" href="https://t.me/popkazana?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BA%D1%83%D0%BF%D0%B8%D1%82%D1%8C%20%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%20%D0%91%D0%B0%D0%B7%D0%B0%20%D0%B7%D0%B0%20299%20%D1%80%D1%83%D0%B1%D0%BB%D0%B5%D0%B9">Купить через Telegram</a>
       </div>
       <div class="card price">
         <h3>Магазин</h3>
         <div class="big">790 ₽</div>
         <p>150 карточек + 60 AI-удалений фона бонусом.</p>
         <div class="tiny">Пакет без подписки • Для большого объёма</div>
+        <a class="ghostBtn priceAction" target="_blank" rel="noopener noreferrer" href="https://t.me/popkazana?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BA%D1%83%D0%BF%D0%B8%D1%82%D1%8C%20%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%20%D0%9C%D0%B0%D0%B3%D0%B0%D0%B7%D0%B8%D0%BD%20%D0%B7%D0%B0%20790%20%D1%80%D1%83%D0%B1%D0%BB%D0%B5%D0%B9">Купить через Telegram</a>
       </div>
     </section>
 
@@ -585,6 +658,19 @@
     const toggleShadow = document.getElementById('toggleShadow');
     const downloadPng = document.getElementById('downloadPng');
     const downloadJpg = document.getElementById('downloadJpg');
+    const tgLoginWrap = document.getElementById('tgLoginWrap');
+    const authHint = document.getElementById('authHint');
+    const accountName = document.getElementById('accountName');
+    const accountNote = document.getElementById('accountNote');
+    const cardsLeftStat = document.getElementById('cardsLeftStat');
+    const bgLeftStat = document.getElementById('bgLeftStat');
+    const cardsLeftPill = document.getElementById('cardsLeftPill');
+    const bgLeftPill = document.getElementById('bgLeftPill');
+    const balancePills = document.getElementById('balancePills');
+    const claimFreeBtn = document.getElementById('claimFreeBtn');
+    const claimFreePricingBtn = document.getElementById('claimFreePricingBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
 
     let image = null;
     let imageName = '';
@@ -837,6 +923,140 @@
       img.src = src;
     }
 
+
+    let viewer = null;
+
+    function escapeHtml(value){
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[ch]));
+    }
+
+    function setBalances(balance){
+      const cards = balance?.card_credits ?? 0;
+      const bg = balance?.bg_remove_credits ?? 0;
+      cardsLeftStat.textContent = String(cards);
+      bgLeftStat.textContent = String(bg);
+      cardsLeftPill.textContent = `Карточек: ${cards}`;
+      bgLeftPill.textContent = `Удалений фона: ${bg}`;
+      balancePills.hidden = !viewer;
+    }
+
+    function renderLoginWidget(){
+      if(viewer){
+        tgLoginWrap.innerHTML = '';
+        return;
+      }
+      tgLoginWrap.innerHTML = '';
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://telegram.org/js/telegram-widget.js?22';
+      script.setAttribute('data-telegram-login', 'cardcraft_login_bot');
+      script.setAttribute('data-size', 'large');
+      script.setAttribute('data-radius', '14');
+      script.setAttribute('data-userpic', 'false');
+      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+      tgLoginWrap.appendChild(script);
+    }
+
+    function updateAccountUI(){
+      if(viewer?.user){
+        const username = viewer.user.telegram_username ? '@' + viewer.user.telegram_username : '';
+        const fullName = [viewer.user.telegram_first_name, viewer.user.telegram_last_name].filter(Boolean).join(' ').trim();
+        accountName.textContent = fullName || username || 'Пользователь';
+        accountNote.textContent = username ? `Вход выполнен через ${username}. Остаток пакетов хранится в базе.` : 'Вход выполнен через Telegram. Остаток пакетов хранится в базе.';
+        authHint.textContent = 'Аккаунт подключён. Теперь остаток карточек и AI-удалений будет сохраняться между заходами.';
+        claimFreeBtn.style.display = viewer.balance && viewer.balance.free_cards_used > 0 ? 'none' : 'inline-flex';
+        if(claimFreePricingBtn){
+          claimFreePricingBtn.style.display = viewer.balance && viewer.balance.free_cards_used > 0 ? 'none' : 'block';
+        }
+        logoutBtn.style.display = 'inline-flex';
+      } else {
+        accountName.textContent = 'Гость';
+        accountNote.textContent = 'После входа здесь появится твой аккаунт и остаток пакетов.';
+        authHint.textContent = 'Сейчас ты как гость. Войди через Telegram, чтобы мы могли сохранять остаток пакетов между заходами.';
+        claimFreeBtn.style.display = 'inline-flex';
+        if(claimFreePricingBtn) claimFreePricingBtn.style.display = 'block';
+        logoutBtn.style.display = 'none';
+      }
+      setBalances(viewer?.balance);
+      renderLoginWidget();
+    }
+
+    async function apiJson(url, options = {}){
+      const response = await fetch(url, {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(options.headers || {})
+        },
+        ...options
+      });
+      let payload = {};
+      try { payload = await response.json(); } catch (_) {}
+      if(!response.ok){
+        throw new Error(payload?.error || 'Ошибка запроса.');
+      }
+      return payload;
+    }
+
+    async function loadViewer(){
+      try{
+        const data = await apiJson('/api/me', { method: 'GET' });
+        viewer = data.loggedIn ? data : null;
+      } catch (_){
+        viewer = null;
+      }
+      updateAccountUI();
+    }
+
+    window.onTelegramAuth = async function(user){
+      try{
+        const data = await apiJson('/api/auth/telegram', {
+          method: 'POST',
+          body: JSON.stringify({ authData: user })
+        });
+        viewer = data;
+        updateAccountUI();
+        alert('Вход выполнен. Теперь остаток пакетов будет сохраняться в аккаунте.');
+      } catch (error){
+        alert(error.message || 'Не удалось войти через Telegram.');
+      }
+    }
+
+    async function claimFreeStart(){
+      try{
+        const data = await apiJson('/api/claim-free-start', { method: 'POST', body: '{}' });
+        viewer = data;
+        updateAccountUI();
+        alert('Готово! Мы начислили 3 бесплатные карточки.');
+      } catch (error){
+        alert(error.message || 'Не удалось начислить бесплатный старт.');
+      }
+    }
+
+    async function logoutAccount(){
+      try{
+        await apiJson('/api/auth/logout', { method: 'POST', body: '{}' });
+      } catch (_) {}
+      viewer = null;
+      updateAccountUI();
+    }
+
+    async function spendCardCredit(){
+      if(!viewer){
+        throw new Error('Сначала войди через Telegram, чтобы сохранить остаток пакетов.');
+      }
+      const data = await apiJson('/api/use-card-credit', { method: 'POST', body: '{}' });
+      viewer = data;
+      updateAccountUI();
+    }
+
+    claimFreeBtn.addEventListener('click', claimFreeStart);
+    if(claimFreePricingBtn) claimFreePricingBtn.addEventListener('click', claimFreeStart);
+    logoutBtn.addEventListener('click', logoutAccount);
+
+
     photoInput.addEventListener('change', e => {
       const file = e.target.files[0];
       if(!file) return;
@@ -868,6 +1088,7 @@
 
         const response = await fetch('/api/remove-background', {
           method: 'POST',
+          credentials: 'include',
           body: formData
         });
 
@@ -953,11 +1174,18 @@
     rotateLeft.addEventListener('click', () => { state.rotation -= 90; draw(); });
     toggleShadow.addEventListener('click', () => { state.shadow = !state.shadow; syncRanges(); draw(); });
 
-    function exportImage(type){
+    async function exportImage(type){
       if(!image){
         alert('Сначала загрузи фото товара.');
         return;
       }
+      try{
+        await spendCardCredit();
+      } catch (error){
+        alert(error.message || 'Не удалось списать карточку.');
+        return;
+      }
+
       const link = document.createElement('a');
       const safeName = (imageName || 'card').replace(/\.[^.]+$/, '');
       link.download = `${safeName}-card.${type === 'image/png' ? 'png' : 'jpg'}`;
@@ -975,8 +1203,10 @@
       }
       link.click();
     }
-    downloadPng.addEventListener('click', () => exportImage('image/png'));
-    downloadJpg.addEventListener('click', () => exportImage('image/jpeg'));
+    downloadPng.addEventListener('click', async () => exportImage('image/png'));
+    downloadJpg.addEventListener('click', async () => exportImage('image/jpeg'));
+
+    loadViewer();
 
     function getPos(e){
       const rect = canvas.getBoundingClientRect();
@@ -1098,4 +1328,4 @@
     draw();
   </script>
 </body>
-  </html>
+</html>
