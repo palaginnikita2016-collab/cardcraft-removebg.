@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CardCraft — конструктор карточек товара</title>
+  <style>
+    :root{
+      --bg:#071022;
+      --panel:#0d1b36;
+      --panel2:#0a1630;
+      --line:rgba(255,255,255,.08);
+      --text:#eef4ff;
+      --muted:#9fb1d9;
+      --accent:#67b6ff;
+      --accent2:#7a74ff;
+      --good:#1fc98a;
+      --warn:#ffb44d;
+      --danger:#ff5b7e;
+      --shadow:0 18px 50px rgba(0,0,0,.35);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(103,182,255,.16), transparent 26%),
+        radial-gradient(circle at 100% 10%, rgba(122,116,255,.14), transparent 25%),
+        linear-gradient(180deg,#071022 0%,#08142b 35%,#050d1d 100%);
+      min-height:100vh;
+    }
+    .wrap{max-width:1260px;margin:0 auto;padding:18px 14px 80px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;border:1px solid var(--line);background:rgba(10,22,48,.72);
+      backdrop-filter: blur(14px);border-radius:22px;box-shadow:var(--shadow);position:sticky;top:10px;z-index:30;
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
+    .logo{
+      width:42px;height:42px;border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      display:grid;place-items:center;font-size:22px;box-shadow:0 10px 25px rgba(103,182,255,.3);
+    }
+    .brand small{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-top:2px}
+    .nav{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);text-decoration:none;font-size:14px}
+    .hero{
+      display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px;
+    }
+    .card{
+      background:linear-gradient(180deg,rgba(13,27,54,.94),rgba(8,19,40,.96));
+      border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+    }
+    .heroMain{
+      padding:34px;
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(103,182,255,.18), transparent 26%),
+        radial-gradient(circle at 88% 20%, rgba(122,116,255,.16), transparent 24%),
+        linear-gradient(180deg,rgba(13,27,54,.98),rgba(8,19,40,.98));
+    }
+    .heroMain::before{
+      content:"";
+      position:absolute;
+      inset:auto -8% -40% auto;
+      width:360px;height:360px;border-radius:50%;
+      background:radial-gradient(circle, rgba(103,182,255,.16), rgba(103,182,255,0) 70%);
+      filter:blur(8px);
+      pointer-events:none;
+    }
+    .heroGrid{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:22px;
+      align-items:center;
+    }
+    .heroContent{min-width:0}
+    .kicker{
+      display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border-radius:999px;
+      background:rgba(103,182,255,.12);border:1px solid rgba(103,182,255,.25);
+      color:#cce6ff;font-size:13px;font-weight:800;letter-spacing:.2px
+    }
+    h1{font-size:54px;line-height:0.98;margin:18px 0 14px;max-width:760px;letter-spacing:-1.2px}
+    .lead{font-size:18px;line-height:1.6;color:var(--muted);max-width:760px;margin:0 0 18px}
+    .heroTrust{
+      display:flex;flex-wrap:wrap;gap:10px;
+      margin:0 0 20px;
+    }
+    .trustItem{
+      padding:10px 12px;border-radius:999px;
+      background:rgba(255,255,255,.045);
+      border:1px solid rgba(255,255,255,.08);
+      color:#dbe8ff;font-size:13px;font-weight:700;
+    }
+    .heroActions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    button,.btn,label.fakeBtn{
+      appearance:none;border:none;cursor:pointer;text-decoration:none;
+      padding:14px 18px;border-radius:16px;font-weight:800;font-size:15px;
+      color:white;background:linear-gradient(135deg,var(--accent),#4fd3ff);box-shadow:0 10px 24px rgba(103,182,255,.25);
+    }
+    .btnSecondary{background:rgba(255,255,255,.05);box-shadow:none;border:1px solid var(--line)}
+    .heroBand{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:8px;
+    }
+    .bandItem{
+      padding:16px 16px 15px;
+      border-radius:18px;
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(8px);
+    }
+    .bandItem b{
+      display:block;
+      font-size:18px;
+      margin-bottom:6px;
+    }
+    .bandItem span{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.45;
+    }
+
+    .heroSide{padding:20px;display:flex;flex-direction:column;gap:12px}
+    .miniHead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .miniHead h3{margin:0;font-size:18px}
+    .mini{color:var(--muted);font-size:13px}
+    .device{
+      background:#dfe5ef;border-radius:26px;padding:18px;min-height:420px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+    }
+    .checker{
+      position:absolute;inset:0;
+      background-image:
+        linear-gradient(45deg, rgba(16,31,66,.08) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(16,31,66,.08) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(16,31,66,.08) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(16,31,66,.08) 75%);
+      background-size:28px 28px;background-position:0 0,0 14px,14px -14px,-14px 0;
+      opacity:.45;
+    }
+    .deviceInner{position:relative;z-index:1;width:min(100%,360px);aspect-ratio:4/5;border-radius:24px;background:white;box-shadow:0 24px 45px rgba(0,0,0,.14);padding:16px;display:flex;flex-direction:column;gap:10px}
+    .chip{align-self:flex-start;padding:8px 12px;border-radius:999px;background:#0c1933;color:#fff;font-size:12px;font-weight:800}
+    .mockBox{flex:1;border-radius:20px;border:2px dashed rgba(12,25,51,.12);display:flex;align-items:center;justify-content:center;color:#71829f;text-align:center;padding:18px}
+    .mockCta{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .mockCta div{padding:12px 0;border-radius:14px;text-align:center;font-weight:800}
+    .mockCta div:first-child{background:#67b6ff;color:#08203f}
+    .mockCta div:last-child{background:#edf2fb;color:#0e2242}
+
+    .editorSection{margin-top:18px;display:grid;grid-template-columns:400px 1fr;gap:18px;align-items:start}
+    .panel{padding:18px}
+    .panel h2,.previewCard h2{margin:0 0 8px;font-size:18px}
+    .sub{margin:0 0 16px;color:var(--muted);font-size:14px;line-height:1.45}
+    .group{padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid var(--line);margin-bottom:12px}
+    .groupTitle{font-weight:800;font-size:14px;margin-bottom:12px}
+    .grid2,.grid3{display:grid;gap:10px}
+    .grid2{grid-template-columns:1fr 1fr}
+    .grid3{grid-template-columns:repeat(3,1fr)}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    input[type="file"]{display:none}
+    select,input[type="text"],input[type="range"],textarea{
+      width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#09142a;color:var(--text);outline:none;font-size:14px
+    }
+    input[type="color"]{
+      width:100%;height:48px;padding:6px;border-radius:14px;border:1px solid var(--line);background:#09142a;cursor:pointer;
+    }
+    textarea{min-height:84px;resize:vertical}
+    .ghostBtn{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-weight:700;box-shadow:none}
+    .small{font-size:12px;color:var(--muted)}
+    .rangeValue{font-size:12px;color:#c8d9ff;font-weight:700}
+    .radioRow{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{padding:10px 12px;border-radius:999px;background:#0a1630;border:1px solid var(--line);font-size:13px;cursor:pointer;user-select:none}
+    .tag.active{background:rgba(103,182,255,.15);border-color:rgba(103,182,255,.45);color:#d8efff}
+
+    .previewCard{padding:18px;position:sticky;top:88px}
+    .previewHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+    .dimPill{padding:12px 16px;border-radius:999px;background:rgba(103,182,255,.12);border:1px solid rgba(103,182,255,.25);font-weight:800;white-space:nowrap}
+    .previewWrap{
+      position:relative;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:24px;padding:16px;overflow:auto;
+    }
+    .canvasHolder{
+      width:100%;display:flex;align-items:center;justify-content:center;min-height:540px;border-radius:22px;overflow:auto;
+      background:
+        linear-gradient(45deg, rgba(255,255,255,.04) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255,255,255,.04) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255,255,255,.04) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,.04) 75%);
+      background-size:28px 28px;background-position:0 0,0 14px,14px -14px,-14px 0;
+    }
+    canvas{
+      width:min(100%,540px);height:auto;border-radius:22px;background:white;box-shadow:0 25px 45px rgba(0,0,0,.22);
+      touch-action:none;
+    }
+    .previewInfo{margin-top:12px;padding:14px;border-radius:16px;background:rgba(31,201,138,.09);border:1px solid rgba(31,201,138,.25);color:#cbffe8;line-height:1.45;font-size:14px}
+
+    .features,.pricing{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .feature,.price{padding:20px}
+    .feature h3,.price h3{margin:12px 0 8px}
+    .icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:rgba(103,182,255,.12);border:1px solid rgba(103,182,255,.25);font-size:22px}
+    .feature p,.price p{margin:0;color:var(--muted);line-height:1.5}
+    .price .big{font-size:34px;font-weight:900;margin:8px 0}
+    .foot{margin-top:24px;padding:18px;text-align:center;color:var(--muted);font-size:14px}
+    .danger{background:linear-gradient(135deg,#7f2947,#ff5b7e)}
+    .good{background:linear-gradient(135deg,#1aa778,#28e6a1);color:#04281d}
+    .tiny{font-size:11px;color:var(--muted);margin-top:8px}
+    .hidden{display:none !important}
+
+    @media (max-width: 1080px){
+      .hero,.editorSection,.features,.pricing{grid-template-columns:1fr}
+      .heroGrid{grid-template-columns:1fr}
+      .previewCard{position:static}
+    }
+    @media (max-width: 740px){
+      .wrap{padding:12px 10px 70px}
+      h1{font-size:38px;line-height:1.02}
+      .grid2,.grid3,.heroBand{grid-template-columns:1fr}
+      .topbar{padding:12px}
+      .heroMain,.heroSide,.panel,.previewCard{padding:18px}
+      .canvasHolder{min-height:360px}
+      canvas{width:100%}
+      .nav{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">✦</div>
+        <div>
+          CardCraft
+          <small>Сайт для создания карточек товара</small>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="pill" href="#editor">Редактор</a>
+        <a class="pill" href="#features">Возможности</a>
+        <a class="pill" href="#pricing">Тарифы</a>
+      </div>
+    </div>
+
+    
+    <section class="hero">
+      <div class="card heroMain">
+        <div class="heroGrid">
+          <div class="heroContent">
+            <div class="kicker">⚡ Для Ozon, WB, Avito и соцсетей</div>
+            <h1>Карточки товара, которые выглядят дороже — за пару минут.</h1>
+            <p class="lead">Загружай фото, меняй фон, двигай товар, добавляй плашки и название, а потом скачивай готовый PNG или JPG прямо с телефона или компьютера.</p>
+
+            <div class="heroTrust">
+              <div class="trustItem">Без фотошопа</div>
+              <div class="trustItem">Двигай всё пальцем</div>
+              <div class="trustItem">PNG и JPG на выходе</div>
+            </div>
+
+            <div class="heroActions">
+              <a class="btn" href="#editor">Открыть редактор</a>
+              <a class="btn btnSecondary" href="#features">Посмотреть возможности</a>
+            </div>
+
+            <div class="heroBand">
+              <div class="bandItem">
+                <b>4 формата</b>
+                <span>Квадрат, маркетплейс 4:5, вертикаль и баннер.</span>
+              </div>
+              <div class="bandItem">
+                <b>Живой редактор</b>
+                <span>Фото, плашку и название можно двигать прямо на карточке.</span>
+              </div>
+              <div class="bandItem">
+                <b>Быстрый старт</b>
+                <span>Открыл, загрузил фото и сразу получил готовый макет.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="editor" class="editorSection">
+      <div class="card panel">
+        <h2>Редактор</h2>
+        <p class="sub">Слева настройки, справа живая карточка. Здесь уже есть твой сайт: загрузи фото и сразу увидишь результат.</p>
+
+        <div class="group">
+          <div class="groupTitle">1. Фото товара</div>
+          <div class="grid2">
+            <label class="fakeBtn" for="photoInput">Загрузить фото</label>
+            <button id="fitBtn" class="ghostBtn">По центру</button>
+          </div>
+          <div style="height:10px"></div>
+          <button id="aiRemoveBtn" class="ghostBtn" style="width:100%">AI удалить фон</button>
+          <input id="photoInput" type="file" accept="image/*" />
+          <div class="tiny" id="fileStatus">Файл ещё не загружен.</div>
+          <div class="tiny" id="bgRemoveStatus">Загрузи фото и нажми кнопку выше. remove.bg вернёт уже вырезанную картинку без фона.</div>
+        </div>
+
+        <div class="group">
+          <div class="groupTitle">2. Формат карточки</div>
+          <div class="grid2">
+            <button class="ghostBtn ratioBtn" data-ratio="1:1">Квадрат 1:1</button>
+            <button class="ghostBtn ratioBtn" data-ratio="4:5">Маркетплейс 4:5</button>
+            <button class="ghostBtn ratioBtn" data-ratio="3:4">Вертикаль 3:4</button>
+            <button class="ghostBtn ratioBtn" data-ratio="16:9">Баннер 16:9</button>
+          </div>
+          <div class="tiny">Рекомендуемый старт: 4:5 для карточек товара.</div>
+        </div>
+
+        <div class="group">
+          <div class="groupTitle">3. Фон</div>
+          <div class="radioRow" id="bgButtons">
+            <div class="tag active" data-bg="white">Белый</div>
+            <div class="tag" data-bg="gray">Серый</div>
+            <div class="tag" data-bg="dark">Тёмный</div>
+            <div class="tag" data-bg="blue">Градиент</div>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="groupTitle">4. Текст и плашка</div>
+          <input id="titleText" type="text" placeholder="Например: Шорты Nike" />
+          <div style="height:10px"></div>
+          <input id="badgeText" type="text" placeholder="Например: Хит продаж" />
+          <div class="tiny">Теперь и плашку, и название можно двигать прямо по карточке.</div>
+        </div>
+
+        <div class="group">
+          <div class="groupTitle">5. Цвета</div>
+          <div class="grid2">
+            <div>
+              <div class="small">Цвет названия</div>
+              <input id="titleColor" type="color" value="#0e2242" />
+            </div>
+            <div>
+              <div class="small">Фон плашки</div>
+              <input id="badgeColor" type="color" value="#ff6a7e" />
+            </div>
+          </div>
+          <div style="height:10px"></div>
+          <div class="grid2">
+            <div>
+              <div class="small">Цвет текста плашки</div>
+              <input id="badgeTextColor" type="color" value="#ffffff" />
+            </div>
+            <div>
+              <div class="small">Быстрый сброс</div>
+              <button id="resetTextPos" class="ghostBtn" style="width:100%">Сбросить позиции</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="groupTitle">6. Размер текста и плашки</div>
+          <div class="small">Размер названия <span class="rangeValue" id="titleSizeVal">100%</span></div>
+          <input id="titleSizeRange" type="range" min="70" max="170" value="100" />
+          <div class="small">Размер плашки <span class="rangeValue" id="badgeSizeVal">100%</span></div>
+          <input id="badgeSizeRange" type="range" min="70" max="180" value="100" />
+          <div class="tiny">Теперь можно отдельно увеличить или уменьшить название и сам бейдж.</div>
+        </div>
+
+        <div class="group">
+          <div class="groupTitle">7. Что двигать пальцем</div>
+          <div class="radioRow" id="toolButtons">
+            <div class="tag active" data-tool="photo">Фото</div>
+            <div class="tag" data-tool="badge">Плашка</div>
+            <div class="tag" data-tool="title">Название</div>
+          </div>
+          <div class="tiny">Выбери объект, потом тяни его прямо на карточке.</div>
+        </div>
+
+        <div class="group">
+          <div class="groupTitle">8. Настройка фото</div>
+          <div class="small">Масштаб <span class="rangeValue" id="scaleVal">100%</span></div>
+          <input id="scaleRange" type="range" min="40" max="180" value="100" />
+          <div class="small">Яркость <span class="rangeValue" id="brightVal">100%</span></div>
+          <input id="brightRange" type="range" min="60" max="160" value="100" />
+          <div class="small">Контраст <span class="rangeValue" id="contrastVal">100%</span></div>
+          <input id="contrastRange" type="range" min="60" max="180" value="100" />
+          <div class="row" style="margin-top:12px">
+            <button id="rotateLeft" class="ghostBtn">↺ Повернуть</button>
+            <button id="toggleShadow" class="ghostBtn">Тень: вкл</button>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="groupTitle">9. Скачивание</div>
+          <div class="grid2">
+            <button id="downloadPng">Скачать PNG</button>
+            <button id="downloadJpg" class="btnSecondary">Скачать JPG</button>
+          </div>
+          <div class="tiny">PNG лучше для прозрачных краёв, JPG — для лёгкого веса.</div>
+        </div>
+      </div>
+
+      <div class="card previewCard">
+        <div class="previewHead">
+          <div>
+            <h2>Предпросмотр карточки</h2>
+            <div class="sub" id="previewMeta">Сначала загрузи фото товара.</div>
+          </div>
+          <div class="dimPill" id="dimLabel">1080 × 1350</div>
+        </div>
+        <div class="previewWrap">
+          <div class="canvasHolder">
+            <canvas id="previewCanvas" width="1080" height="1350"></canvas>
+          </div>
+        </div>
+        <div class="previewInfo">Фото, плашку и название можно двигать прямо на карточке. Если подключён сервер с remove.bg, кнопка AI удалит фон и вернёт уже вырезанный PNG.</div>
+      </div>
+    </section>
+
+    <section id="features" class="features">
+      <div class="card feature">
+        <div class="icon">🖼️</div>
+        <h3>Редактор без фотошопа</h3>
+        <p>Простой интерфейс: загрузка фото, выбор фона, размер карточки, текст и экспорт. Подходит для быстрого MVP.</p>
+      </div>
+      <div class="card feature">
+        <div class="icon">📦</div>
+        <h3>Под карточки товара</h3>
+        <p>Сразу можно делать изображения под маркетплейсы, соцсети, объявления и витрины без лишних кнопок.</p>
+      </div>
+      <div class="card feature">
+        <div class="icon">🚀</div>
+        <h3>Основа для роста</h3>
+        <p>Потом легко добавить умное удаление фона, шаблоны по категориям, пакетную обработку и подписку.</p>
+      </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+      <div class="card price">
+        <h3>Старт</h3>
+        <div class="big">0 ₽</div>
+        <p>До 3 карточек в день, базовый экспорт, тест идеи.</p>
+      </div>
+      <div class="card price">
+        <h3>Продавец</h3>
+        <div class="big">299 ₽</div>
+        <p>До 100 карточек, пакетная обработка, шаблоны площадок.</p>
+      </div>
+      <div class="card price">
+        <h3>Магазин</h3>
+        <div class="big">990 ₽</div>
+        <p>До 500 карточек, брендовые стили, история проектов, ZIP-выгрузка.</p>
+      </div>
+    </section>
+
+    <div class="foot">CardCraft • Конструктор карточек товара с remove.bg для маркетплейсов и соцсетей</div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('previewCanvas');
+    const ctx = canvas.getContext('2d');
+    const photoInput = document.getElementById('photoInput');
+    const fileStatus = document.getElementById('fileStatus');
+    const previewMeta = document.getElementById('previewMeta');
+    const dimLabel = document.getElementById('dimLabel');
+
+    const scaleRange = document.getElementById('scaleRange');
+    const brightRange = document.getElementById('brightRange');
+    const contrastRange = document.getElementById('contrastRange');
+    const titleSizeRange = document.getElementById('titleSizeRange');
+    const badgeSizeRange = document.getElementById('badgeSizeRange');
+    const scaleVal = document.getElementById('scaleVal');
+    const brightVal = document.getElementById('brightVal');
+    const contrastVal = document.getElementById('contrastVal');
+    const titleSizeVal = document.getElementById('titleSizeVal');
+    const badgeSizeVal = document.getElementById('badgeSizeVal');
+
+    const titleText = document.getElementById('titleText');
+    const badgeText = document.getElementById('badgeText');
+    const titleColor = document.getElementById('titleColor');
+    const badgeColor = document.getElementById('badgeColor');
+    const badgeTextColor = document.getElementById('badgeTextColor');
+    const resetTextPos = document.getElementById('resetTextPos');
+    const fitBtn = document.getElementById('fitBtn');
+    const aiRemoveBtn = document.getElementById('aiRemoveBtn');
+    const bgRemoveStatus = document.getElementById('bgRemoveStatus');
+    const rotateLeft = document.getElementById('rotateLeft');
+    const toggleShadow = document.getElementById('toggleShadow');
+    const downloadPng = document.getElementById('downloadPng');
+    const downloadJpg = document.getElementById('downloadJpg');
+
+    let image = null;
+    let imageName = '';
+    let originalFile = null;
+    let currentObjectUrl = null;
+    let state = {
+      ratio: '4:5',
+      bg: 'white',
+      scale: 1,
+      brightness: 100,
+      contrast: 100,
+      rotation: 0,
+      x: 0,
+      y: 0,
+      shadow: true,
+      dragging: false,
+      lastX: 0,
+      lastY: 0,
+      naturalW: 0,
+      naturalH: 0,
+      activeTool: 'photo',
+      titleX: 0,
+      titleY: 0,
+      badgeX: 0,
+      badgeY: 0,
+      titleColor: '#0e2242',
+      badgeColor: '#ff6a7e',
+      badgeTextColor: '#ffffff',
+      titleScale: 1,
+      badgeScale: 1
+    };
+
+    const ratios = {
+      '1:1': [1080,1080],
+      '4:5': [1080,1350],
+      '3:4': [1080,1440],
+      '16:9': [1600,900]
+    };
+
+    function setRatio(ratio){
+      const oldW = canvas.width || ratios[ratio][0];
+      const oldH = canvas.height || ratios[ratio][1];
+      state.ratio = ratio;
+      const [w,h] = ratios[ratio];
+      if(oldW && oldH){
+        const sx = w / oldW;
+        const sy = h / oldH;
+        state.x *= sx;
+        state.y *= sy;
+        state.titleX *= sx;
+        state.titleY *= sy;
+        state.badgeX *= sx;
+        state.badgeY *= sy;
+      }
+      canvas.width = w;
+      canvas.height = h;
+      dimLabel.textContent = `${w} × ${h}`;
+      document.querySelectorAll('.ratioBtn').forEach(btn=>{
+        btn.style.background = btn.dataset.ratio === ratio ? 'linear-gradient(135deg,var(--accent),#4fd3ff)' : 'rgba(255,255,255,.04)';
+        btn.style.color = btn.dataset.ratio === ratio ? '#08203f' : 'white';
+        btn.style.border = btn.dataset.ratio === ratio ? 'none' : '1px solid var(--line)';
+      });
+      if(image) fitImage();
+      draw();
+    }
+
+    function initOverlayPositions(force = false){
+      if(force || !state.badgeX || !state.badgeY){
+        state.badgeX = canvas.width * 0.05;
+        state.badgeY = canvas.height * 0.045;
+      }
+      if(force || !state.titleX || !state.titleY){
+        state.titleX = canvas.width * 0.06;
+        state.titleY = canvas.height * 0.89;
+      }
+    }
+
+    function bgFill(){
+      switch(state.bg){
+        case 'white':
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0,0,canvas.width,canvas.height);
+          break;
+        case 'gray':
+          ctx.fillStyle = '#eef2f7';
+          ctx.fillRect(0,0,canvas.width,canvas.height);
+          break;
+        case 'dark': {
+          const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+          g.addColorStop(0,'#15243f');
+          g.addColorStop(1,'#090f1f');
+          ctx.fillStyle = g;
+          ctx.fillRect(0,0,canvas.width,canvas.height);
+          break;
+        }
+        case 'blue': {
+          const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+          g.addColorStop(0,'#ebf7ff');
+          g.addColorStop(1,'#cfdcff');
+          ctx.fillStyle = g;
+          ctx.fillRect(0,0,canvas.width,canvas.height);
+          const g2 = ctx.createRadialGradient(canvas.width*0.2,canvas.height*0.1,50,canvas.width*0.2,canvas.height*0.1,canvas.width*0.9);
+          g2.addColorStop(0,'rgba(103,182,255,.28)');
+          g2.addColorStop(1,'rgba(103,182,255,0)');
+          ctx.fillStyle = g2;
+          ctx.fillRect(0,0,canvas.width,canvas.height);
+          break;
+        }
+      }
+    }
+
+    function drawPlaceholder(){
+      bgFill();
+      ctx.fillStyle = 'rgba(11,25,52,.18)';
+      roundRect(ctx, canvas.width*0.08, canvas.height*0.14, canvas.width*0.84, canvas.height*0.72, 38, true, false);
+      ctx.fillStyle = 'rgba(11,25,52,.58)';
+      ctx.font = `700 ${Math.max(28, canvas.width*0.03)}px Inter, Arial`;
+      ctx.textAlign = 'center';
+      ctx.fillText('Загрузи фото товара', canvas.width/2, canvas.height*0.46);
+      ctx.font = `500 ${Math.max(18, canvas.width*0.02)}px Inter, Arial`;
+      ctx.fillStyle = 'rgba(11,25,52,.48)';
+      ctx.fillText('И здесь появится готовая карточка', canvas.width/2, canvas.height*0.51);
+    }
+
+    function drawOverlayText(){
+      initOverlayPositions();
+      if(badgeText.value.trim()){
+        const txt = badgeText.value.trim();
+        const x = state.badgeX;
+        const y = state.badgeY;
+        const maxBadgeWidth = canvas.width * 0.58;
+        let fontSize = Math.max(20, Math.min(34, canvas.width * 0.022)) * state.badgeScale;
+
+        ctx.save();
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.font = `800 ${fontSize}px Inter, Arial`;
+        const minFont = Math.max(14, 16 * state.badgeScale);
+        const horizontalPad = Math.max(14, 17 * state.badgeScale);
+        const verticalPad = Math.max(12, 12 * state.badgeScale);
+        while(ctx.measureText(txt).width > maxBadgeWidth - horizontalPad*2 && fontSize > minFont){
+          fontSize -= 1;
+          ctx.font = `800 ${fontSize}px Inter, Arial`;
+        }
+
+        const badgeWidth = Math.min(maxBadgeWidth, ctx.measureText(txt).width + horizontalPad * 2);
+        const badgeHeight = Math.max(42, fontSize + verticalPad * 2);
+
+        ctx.fillStyle = state.badgeColor;
+        const badgeRadius = Math.max(12, 16 * state.badgeScale);
+        roundRect(ctx, x, y, badgeWidth, badgeHeight, badgeRadius, true, false);
+
+        if(state.activeTool === 'badge'){
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = 'rgba(103,182,255,.95)';
+          roundRect(ctx, x - 4, y - 4, badgeWidth + 8, badgeHeight + 8, badgeRadius + 4, false, true);
+        }
+
+        ctx.fillStyle = state.badgeTextColor;
+        ctx.fillText(txt, x + horizontalPad, y + badgeHeight / 2 + 1);
+        ctx.restore();
+      }
+      if(titleText.value.trim()){
+        ctx.save();
+        ctx.fillStyle = state.titleColor;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        const titleFontSize = Math.max(28, canvas.width*0.034) * state.titleScale;
+        const lineHeight = Math.max(32, canvas.width*0.04) * state.titleScale;
+        ctx.font = `900 ${titleFontSize}px Inter, Arial`;
+        const lines = wrapText(ctx, titleText.value.trim(), state.titleX, state.titleY, canvas.width*0.88, lineHeight);
+        if(state.activeTool === 'title'){
+          const box = getWrappedTextBounds(ctx, lines, state.titleX, state.titleY, lineHeight);
+          ctx.strokeStyle = 'rgba(103,182,255,.95)';
+          ctx.lineWidth = 3;
+          roundRect(ctx, box.x - 8, box.y - 8, box.w + 16, box.h + 16, 18, false, true);
+        }
+        ctx.restore();
+      }
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      bgFill();
+      if(!image){
+        drawPlaceholder();
+        drawOverlayText();
+        return;
+      }
+
+      const centerX = canvas.width/2 + state.x;
+      const centerY = canvas.height/2 + state.y - canvas.height*0.02;
+      const baseScale = Math.min(canvas.width / image.width, canvas.height / image.height) * 0.72;
+      const finalScale = baseScale * state.scale;
+      const drawW = image.width * finalScale;
+      const drawH = image.height * finalScale;
+
+      ctx.save();
+      ctx.filter = `brightness(${state.brightness}%) contrast(${state.contrast}%)`;
+      ctx.translate(centerX, centerY);
+      ctx.rotate(state.rotation * Math.PI / 180);
+      if(state.shadow){
+        ctx.shadowColor = 'rgba(0,0,0,.18)';
+        ctx.shadowBlur = 40;
+        ctx.shadowOffsetY = 20;
+      }
+      ctx.drawImage(image, -drawW/2, -drawH/2, drawW, drawH);
+      ctx.restore();
+
+      drawOverlayText();
+    }
+
+    function fitImage(){
+      state.scale = 1;
+      state.x = 0;
+      state.y = 0;
+      state.rotation = 0;
+      initOverlayPositions(true);
+      syncRanges();
+      draw();
+    }
+
+    function syncRanges(){
+      scaleRange.value = Math.round(state.scale * 100);
+      brightRange.value = state.brightness;
+      contrastRange.value = state.contrast;
+      titleSizeRange.value = Math.round(state.titleScale * 100);
+      badgeSizeRange.value = Math.round(state.badgeScale * 100);
+      scaleVal.textContent = `${Math.round(state.scale * 100)}%`;
+      brightVal.textContent = `${state.brightness}%`;
+      contrastVal.textContent = `${state.contrast}%`;
+      titleSizeVal.textContent = `${Math.round(state.titleScale * 100)}%`;
+      badgeSizeVal.textContent = `${Math.round(state.badgeScale * 100)}%`;
+      toggleShadow.textContent = `Тень: ${state.shadow ? 'вкл' : 'выкл'}`;
+    }
+
+    function loadImageFromSrc(src, name){
+      const img = new Image();
+      img.onload = () => {
+        image = img;
+        imageName = name || 'image.png';
+        state.naturalW = img.width;
+        state.naturalH = img.height;
+        previewMeta.textContent = `${imageName} • редактируй, двигай картинку пальцем и скачивай.`;
+        fitImage();
+      };
+      img.onerror = () => {
+        bgRemoveStatus.textContent = 'Не удалось открыть изображение.';
+      };
+      img.src = src;
+    }
+
+    photoInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if(!file) return;
+      originalFile = file;
+      imageName = file.name;
+      fileStatus.textContent = `Загружено: ${file.name}`;
+      bgRemoveStatus.textContent = 'Фото загружено. Можно удалить фон через AI.';
+      const reader = new FileReader();
+      reader.onload = () => {
+        loadImageFromSrc(reader.result, file.name);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    aiRemoveBtn.addEventListener('click', async () => {
+      if(!originalFile){
+        bgRemoveStatus.textContent = 'Сначала загрузи фото товара.';
+        return;
+      }
+
+      const oldText = aiRemoveBtn.textContent;
+      aiRemoveBtn.disabled = true;
+      aiRemoveBtn.textContent = 'Удаляем фон...';
+      bgRemoveStatus.textContent = 'Идёт обработка remove.bg...';
+
+      try{
+        const formData = new FormData();
+        formData.append('image', originalFile);
+
+        const response = await fetch('/api/remove-background', {
+          method: 'POST',
+          body: formData
+        });
+
+        if(!response.ok){
+          let errorMessage = 'Не удалось удалить фон.';
+          try{
+            const err = await response.json();
+            if(err && err.error) errorMessage = err.error;
+          } catch (_) {}
+          throw new Error(errorMessage);
+        }
+
+        const blob = await response.blob();
+        if(currentObjectUrl){
+          URL.revokeObjectURL(currentObjectUrl);
+        }
+        currentObjectUrl = URL.createObjectURL(blob);
+        const nextName = (originalFile.name || 'image').replace(/\.[^.]+$/, '') + '-no-bg.png';
+        loadImageFromSrc(currentObjectUrl, nextName);
+        bgRemoveStatus.textContent = 'Готово — фон удалён. Теперь можно выбрать новый фон и скачать карточку.';
+      } catch (error){
+        bgRemoveStatus.textContent = error.message || 'Ошибка удаления фона.';
+      } finally {
+        aiRemoveBtn.disabled = false;
+        aiRemoveBtn.textContent = oldText;
+      }
+    });
+
+    document.querySelectorAll('.ratioBtn').forEach(btn => {
+      btn.addEventListener('click', () => setRatio(btn.dataset.ratio));
+    });
+
+    document.querySelectorAll('#bgButtons .tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        document.querySelectorAll('#bgButtons .tag').forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+        state.bg = tag.dataset.bg;
+        draw();
+      });
+    });
+
+    document.querySelectorAll('#toolButtons .tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        document.querySelectorAll('#toolButtons .tag').forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+        state.activeTool = tag.dataset.tool;
+        draw();
+      });
+    });
+
+    scaleRange.addEventListener('input', () => {
+      state.scale = Number(scaleRange.value) / 100;
+      scaleVal.textContent = `${scaleRange.value}%`;
+      draw();
+    });
+    brightRange.addEventListener('input', () => {
+      state.brightness = Number(brightRange.value);
+      brightVal.textContent = `${brightRange.value}%`;
+      draw();
+    });
+    contrastRange.addEventListener('input', () => {
+      state.contrast = Number(contrastRange.value);
+      contrastVal.textContent = `${contrastRange.value}%`;
+      draw();
+    });
+    titleSizeRange.addEventListener('input', () => {
+      state.titleScale = Number(titleSizeRange.value) / 100;
+      titleSizeVal.textContent = `${titleSizeRange.value}%`;
+      draw();
+    });
+    badgeSizeRange.addEventListener('input', () => {
+      state.badgeScale = Number(badgeSizeRange.value) / 100;
+      badgeSizeVal.textContent = `${badgeSizeRange.value}%`;
+      draw();
+    });
+
+    [titleText,badgeText].forEach(el => el.addEventListener('input', draw));
+    titleColor.addEventListener('input', () => { state.titleColor = titleColor.value; draw(); });
+    badgeColor.addEventListener('input', () => { state.badgeColor = badgeColor.value; draw(); });
+    badgeTextColor.addEventListener('input', () => { state.badgeTextColor = badgeTextColor.value; draw(); });
+    resetTextPos.addEventListener('click', () => { initOverlayPositions(true); state.titleScale = 1; state.badgeScale = 1; syncRanges(); draw(); });
+    fitBtn.addEventListener('click', fitImage);
+    rotateLeft.addEventListener('click', () => { state.rotation -= 90; draw(); });
+    toggleShadow.addEventListener('click', () => { state.shadow = !state.shadow; syncRanges(); draw(); });
+
+    function exportImage(type){
+      if(!image){
+        alert('Сначала загрузи фото товара.');
+        return;
+      }
+      const link = document.createElement('a');
+      const safeName = (imageName || 'card').replace(/\.[^.]+$/, '');
+      link.download = `${safeName}-card.${type === 'image/png' ? 'png' : 'jpg'}`;
+      if(type === 'image/jpeg'){
+        const temp = document.createElement('canvas');
+        temp.width = canvas.width;
+        temp.height = canvas.height;
+        const tctx = temp.getContext('2d');
+        tctx.fillStyle = '#ffffff';
+        tctx.fillRect(0,0,temp.width,temp.height);
+        tctx.drawImage(canvas,0,0);
+        link.href = temp.toDataURL(type, 0.94);
+      } else {
+        link.href = canvas.toDataURL(type);
+      }
+      link.click();
+    }
+    downloadPng.addEventListener('click', () => exportImage('image/png'));
+    downloadJpg.addEventListener('click', () => exportImage('image/jpeg'));
+
+    function getPos(e){
+      const rect = canvas.getBoundingClientRect();
+      const point = e.touches ? e.touches[0] : e;
+      return { x: point.clientX - rect.left, y: point.clientY - rect.top };
+    }
+    function startDrag(e){
+      if(!image && state.activeTool === 'photo') return;
+      const p = getPos(e);
+      state.dragging = true;
+      state.lastX = p.x;
+      state.lastY = p.y;
+    }
+    function moveDrag(e){
+      if(!state.dragging) return;
+      if(e.cancelable) e.preventDefault();
+      const p = getPos(e);
+      const dx = p.x - state.lastX;
+      const dy = p.y - state.lastY;
+      const scaleX = canvas.width / canvas.getBoundingClientRect().width;
+      const scaleY = canvas.height / canvas.getBoundingClientRect().height;
+      const moveX = dx * scaleX;
+      const moveY = dy * scaleY;
+
+      if(state.activeTool === 'photo'){
+        if(!image) return;
+        state.x += moveX;
+        state.y += moveY;
+      } else if(state.activeTool === 'badge'){
+        state.badgeX += moveX;
+        state.badgeY += moveY;
+      } else if(state.activeTool === 'title'){
+        state.titleX += moveX;
+        state.titleY += moveY;
+      }
+
+      state.lastX = p.x;
+      state.lastY = p.y;
+      draw();
+    }
+    function endDrag(){ state.dragging = false; }
+
+    canvas.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', moveDrag);
+    window.addEventListener('mouseup', endDrag);
+    canvas.addEventListener('touchstart', startDrag, {passive:true});
+    canvas.addEventListener('touchmove', moveDrag, {passive:false});
+    window.addEventListener('touchend', endDrag);
+
+    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+      if (typeof radius === 'number') {
+        radius = {tl: radius, tr: radius, br: radius, bl: radius};
+      } else {
+        const defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+        radius = Object.assign(defaultRadius, radius || {});
+      }
+      const maxRadius = Math.max(0, Math.min(width, height) / 2);
+      radius.tl = Math.min(radius.tl, maxRadius);
+      radius.tr = Math.min(radius.tr, maxRadius);
+      radius.br = Math.min(radius.br, maxRadius);
+      radius.bl = Math.min(radius.bl, maxRadius);
+      ctx.beginPath();
+      ctx.moveTo(x + radius.tl, y);
+      ctx.lineTo(x + width - radius.tr, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+      ctx.lineTo(x + width, y + height - radius.br);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+      ctx.lineTo(x + radius.bl, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+      ctx.lineTo(x, y + radius.tl);
+      ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+      const words = text.split(' ');
+      let line = '';
+      let currentY = y;
+      const lines = [];
+      for(let n=0; n<words.length; n++){
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if(metrics.width > maxWidth && n > 0){
+          const finalLine = line.trim();
+          ctx.fillText(finalLine, x, currentY);
+          lines.push(finalLine);
+          line = words[n] + ' ';
+          currentY += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      const finalLine = line.trim();
+      ctx.fillText(finalLine, x, currentY);
+      lines.push(finalLine);
+      return lines;
+    }
+
+    function getWrappedTextBounds(ctx, lines, x, y, lineHeight){
+      let maxWidth = 0;
+      lines.forEach(line => {
+        maxWidth = Math.max(maxWidth, ctx.measureText(line).width);
+      });
+      return {
+        x,
+        y: y - lineHeight * 0.8,
+        w: maxWidth,
+        h: lineHeight * lines.length
+      };
+    }
+
+    state.titleColor = titleColor.value;
+    state.badgeColor = badgeColor.value;
+    state.badgeTextColor = badgeTextColor.value;
+    setRatio('4:5');
+    syncRanges();
+    draw();
+  </script>
+</body>
+</html>
