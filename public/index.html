@@ -235,7 +235,7 @@
         <div class="logo">✦</div>
         <div>
           CardCraft
-          <small>Сайт для создания карточек товара</small>
+          <small>Сервис для карточек товара</small>
         </div>
       </div>
       <div class="nav">
@@ -252,12 +252,12 @@
           <div class="heroContent">
             <div class="kicker">⚡ Для Ozon, WB, Avito и соцсетей</div>
             <h1>Карточки товара, которые выглядят дороже — за пару минут.</h1>
-            <p class="lead">Загружай фото, меняй фон, двигай товар, добавляй плашки и название, а потом скачивай готовый PNG или JPG прямо с телефона или компьютера.</p>
+            <p class="lead">Загружай фото товара, подбирай фон, двигай элементы на карточке и получай аккуратный результат за пару минут — прямо с телефона или компьютера.</p>
 
             <div class="heroTrust">
-              <div class="trustItem">Без фотошопа</div>
-              <div class="trustItem">Двигай всё пальцем</div>
-              <div class="trustItem">PNG и JPG на выходе</div>
+              <div class="trustItem">Без сложных программ</div>
+              <div class="trustItem">Удобно с телефона</div>
+              <div class="trustItem">Готово для выгрузки</div>
             </div>
 
             <div class="heroActions">
@@ -271,12 +271,12 @@
                 <span>Квадрат, маркетплейс 4:5, вертикаль и баннер.</span>
               </div>
               <div class="bandItem">
-                <b>Живой редактор</b>
+                <b>Удобный редактор</b>
                 <span>Фото, плашку и название можно двигать прямо на карточке.</span>
               </div>
               <div class="bandItem">
                 <b>Быстрый старт</b>
-                <span>Открыл, загрузил фото и сразу получил готовый макет.</span>
+                <span>Открыл сервис, добавил фото и сразу увидел готовую карточку.</span>
               </div>
             </div>
           </div>
@@ -288,7 +288,7 @@
     <section id="editor" class="editorSection">
       <div class="card panel">
         <h2>Редактор</h2>
-        <p class="sub">Слева настройки, справа живая карточка. Здесь уже есть твой сайт: загрузи фото и сразу увидишь результат.</p>
+        <p class="sub">Слева настройки, справа готовая карточка. Загрузи фото и сразу посмотри, как будет выглядеть результат.</p>
 
         <div class="group">
           <div class="groupTitle">1. Фото товара</div>
@@ -297,10 +297,10 @@
             <button id="fitBtn" class="ghostBtn">По центру</button>
           </div>
           <div style="height:10px"></div>
-          <button id="aiRemoveBtn" class="ghostBtn" style="width:100%">AI удалить фон</button>
+          <button id="aiRemoveBtn" class="ghostBtn" style="width:100%">Убрать фон автоматически</button>
           <input id="photoInput" type="file" accept="image/*" />
           <div class="tiny" id="fileStatus">Файл ещё не загружен.</div>
-          <div class="tiny" id="bgRemoveStatus">Загрузи фото и нажми кнопку выше. remove.bg вернёт уже вырезанную картинку без фона.</div>
+          <div class="tiny" id="bgRemoveStatus">Загрузи фото и нажми кнопку выше. Сервис аккуратно уберёт фон и вернёт готовое изображение.</div>
         </div>
 
         <div class="group">
@@ -329,7 +329,7 @@
           <input id="titleText" type="text" placeholder="Например: Шорты Nike" />
           <div style="height:10px"></div>
           <input id="badgeText" type="text" placeholder="Например: Хит продаж" />
-          <div class="tiny">Теперь и плашку, и название можно двигать прямо по карточке.</div>
+          <div class="tiny">Плашку и название можно свободно переставлять прямо на карточке.</div>
         </div>
 
         <div class="group">
@@ -363,17 +363,17 @@
           <input id="titleSizeRange" type="range" min="70" max="170" value="100" />
           <div class="small">Размер плашки <span class="rangeValue" id="badgeSizeVal">100%</span></div>
           <input id="badgeSizeRange" type="range" min="70" max="180" value="100" />
-          <div class="tiny">Теперь можно отдельно увеличить или уменьшить название и сам бейдж.</div>
+          <div class="tiny">Можно отдельно настроить размер названия и плашки.</div>
         </div>
 
         <div class="group">
-          <div class="groupTitle">7. Что двигать пальцем</div>
+          <div class="groupTitle">7. Что перемещать</div>
           <div class="radioRow" id="toolButtons">
             <div class="tag active" data-tool="photo">Фото</div>
             <div class="tag" data-tool="badge">Плашка</div>
             <div class="tag" data-tool="title">Название</div>
           </div>
-          <div class="tiny">Выбери объект, потом тяни его прямо на карточке.</div>
+          <div class="tiny">Выбери элемент и передвинь его в нужное место прямо на карточке.</div>
         </div>
 
         <div class="group">
@@ -391,12 +391,12 @@
         </div>
 
         <div class="group">
-          <div class="groupTitle">9. Скачивание</div>
+          <div class="groupTitle">9. Сохранение</div>
           <div class="grid2">
-            <button id="downloadPng">Скачать PNG</button>
-            <button id="downloadJpg" class="btnSecondary">Скачать JPG</button>
+            <button id="downloadPng">Скачать в PNG</button>
+            <button id="downloadJpg" class="btnSecondary">Скачать в JPG</button>
           </div>
-          <div class="tiny">PNG лучше для прозрачных краёв, JPG — для лёгкого веса.</div>
+          <div class="tiny">Выбери формат, который тебе удобнее сохранить или отправить.</div>
         </div>
       </div>
 
@@ -413,15 +413,15 @@
             <canvas id="previewCanvas" width="1080" height="1350"></canvas>
           </div>
         </div>
-        <div class="previewInfo">Фото, плашку и название можно двигать прямо на карточке. Если подключён сервер с remove.bg, кнопка AI удалит фон и вернёт уже вырезанный PNG.</div>
+        <div class="previewInfo">Фото, плашку и название можно двигать прямо на карточке. Всё меняется сразу, поэтому результат видно без лишних шагов.</div>
       </div>
     </section>
 
     <section id="features" class="features">
       <div class="card feature">
         <div class="icon">🖼️</div>
-        <h3>Редактор без фотошопа</h3>
-        <p>Простой интерфейс: загрузка фото, выбор фона, размер карточки, текст и экспорт. Подходит для быстрого MVP.</p>
+        <h3>Просто и понятно</h3>
+        <p>Загрузи фото, выбери фон, добавь текст и сразу получи аккуратную карточку без сложных настроек.</p>
       </div>
       <div class="card feature">
         <div class="icon">📦</div>
@@ -431,7 +431,7 @@
       <div class="card feature">
         <div class="icon">🚀</div>
         <h3>Основа для роста</h3>
-        <p>Потом легко добавить умное удаление фона, шаблоны по категориям, пакетную обработку и подписку.</p>
+        <p>Подходит и для первых тестов, и для роста сервиса: можно развивать шаблоны, стили и удобство для продавцов.</p>
       </div>
     </section>
 
@@ -439,21 +439,21 @@
       <div class="card price">
         <h3>Старт</h3>
         <div class="big">0 ₽</div>
-        <p>До 3 карточек в день, базовый экспорт, тест идеи.</p>
+        <p>До 3 карточек в день, чтобы спокойно попробовать сервис.</p>
       </div>
       <div class="card price">
         <h3>Продавец</h3>
         <div class="big">299 ₽</div>
-        <p>До 100 карточек, пакетная обработка, шаблоны площадок.</p>
+        <p>До 100 карточек, удобнее для активных продавцов.</p>
       </div>
       <div class="card price">
         <h3>Магазин</h3>
         <div class="big">990 ₽</div>
-        <p>До 500 карточек, брендовые стили, история проектов, ZIP-выгрузка.</p>
+        <p>До 500 карточек, фирменные стили и работа для магазина.</p>
       </div>
     </section>
 
-    <div class="foot">CardCraft • Конструктор карточек товара с remove.bg для маркетплейсов и соцсетей</div>
+    <div class="foot">CardCraft • Сервис для создания карточек товара для маркетплейсов и соцсетей</div>
   </div>
 
   <script>
@@ -746,7 +746,7 @@
       originalFile = file;
       imageName = file.name;
       fileStatus.textContent = `Загружено: ${file.name}`;
-      bgRemoveStatus.textContent = 'Фото загружено. Можно удалить фон через AI.';
+      bgRemoveStatus.textContent = 'Фото загружено. Можно убрать фон автоматически.';
       const reader = new FileReader();
       reader.onload = () => {
         loadImageFromSrc(reader.result, file.name);
@@ -763,7 +763,7 @@
       const oldText = aiRemoveBtn.textContent;
       aiRemoveBtn.disabled = true;
       aiRemoveBtn.textContent = 'Удаляем фон...';
-      bgRemoveStatus.textContent = 'Идёт обработка remove.bg...';
+      bgRemoveStatus.textContent = 'Убираем фон... Обычно это занимает несколько секунд.';
 
       try{
         const formData = new FormData();
@@ -790,7 +790,7 @@
         currentObjectUrl = URL.createObjectURL(blob);
         const nextName = (originalFile.name || 'image').replace(/\.[^.]+$/, '') + '-no-bg.png';
         loadImageFromSrc(currentObjectUrl, nextName);
-        bgRemoveStatus.textContent = 'Готово — фон удалён. Теперь можно выбрать новый фон и скачать карточку.';
+        bgRemoveStatus.textContent = 'Готово — фон убран. Теперь можно выбрать новый фон и сохранить карточку.';
       } catch (error){
         bgRemoveStatus.textContent = error.message || 'Ошибка удаления фона.';
       } finally {
