@@ -200,6 +200,63 @@
     .previewInfo{margin-top:12px;padding:14px;border-radius:16px;background:rgba(31,201,138,.09);border:1px solid rgba(31,201,138,.25);color:#cbffe8;line-height:1.45;font-size:14px}
 
     .features,.pricing{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+    .contactsSection{margin-top:18px}
+    .contactsBox{padding:24px}
+    .contactsBadge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 14px;border-radius:999px;
+      background:rgba(103,182,255,.12);
+      border:1px solid rgba(103,182,255,.25);
+      color:#cce6ff;font-size:13px;font-weight:800;
+      margin-bottom:14px
+    }
+    .contactsLead{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:16px;
+      max-width:760px
+    }
+    .contactsList{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px
+    }
+    .contactCard{
+      display:block;
+      text-decoration:none;
+      color:#eef4ff;
+      padding:20px;
+      border-radius:20px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      transition:transform .18s ease,border-color .18s ease,background .18s ease;
+      box-shadow:0 10px 24px rgba(0,0,0,.12)
+    }
+    .contactCard:hover{
+      transform:translateY(-2px);
+      border-color:rgba(103,182,255,.35);
+      background:rgba(255,255,255,.06)
+    }
+    .contactTitle{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:8px
+    }
+    .contactValue{
+      font-size:18px;
+      font-weight:800;
+      line-height:1.35;
+      word-break:break-word
+    }
+    .contactHint{
+      margin-top:10px;
+      color:#bfd4ff;
+      font-size:13px;
+      line-height:1.45
+    }
+
     .feature,.price{padding:20px}
     .feature h3,.price h3{margin:12px 0 8px}
     .icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:rgba(103,182,255,.12);border:1px solid rgba(103,182,255,.25);font-size:22px}
@@ -212,14 +269,14 @@
     .hidden{display:none !important}
 
     @media (max-width: 1080px){
-      .hero,.editorSection,.features,.pricing{grid-template-columns:1fr}
+      .hero,.editorSection,.features,.pricing,.contactsList{grid-template-columns:1fr}
       .heroGrid{grid-template-columns:1fr}
       .previewCard{position:static}
     }
     @media (max-width: 740px){
       .wrap{padding:12px 10px 70px}
       h1{font-size:38px;line-height:1.02}
-      .grid2,.grid3,.heroBand{grid-template-columns:1fr}
+      .grid2,.grid3,.heroBand,.contactsList{grid-template-columns:1fr}
       .topbar{padding:12px}
       .heroMain,.heroSide,.panel,.previewCard{padding:18px}
       .canvasHolder{min-height:360px}
@@ -242,6 +299,7 @@
         <a class="pill" href="#editor">Редактор</a>
         <a class="pill" href="#features">Возможности</a>
         <a class="pill" href="#pricing">Тарифы</a>
+        <a class="pill" href="#contacts">Контакты</a>
       </div>
     </div>
 
@@ -450,6 +508,35 @@
         <h3>Магазин</h3>
         <div class="big">990 ₽</div>
         <p>До 500 карточек, фирменные стили и работа для магазина.</p>
+      </div>
+    </section>
+
+
+    <section id="contacts" class="contactsSection">
+      <div class="card contactsBox">
+        <div class="contactsBadge">Контакты и соцсети</div>
+        <h2>Связаться с нами</h2>
+        <p class="contactsLead">Если есть вопрос по загрузке фото, карточкам товара или работе сервиса — напишите нам удобным способом.</p>
+
+        <div class="contactsList">
+          <a class="contactCard" href="https://t.me/popkazana" target="_blank" rel="noopener noreferrer">
+            <div class="contactTitle">Telegram</div>
+            <div class="contactValue">@popkazana</div>
+            <div class="contactHint">Быстрый способ написать и задать вопрос.</div>
+          </a>
+
+          <a class="contactCard" href="https://max.ru/u/f9LHodD0cOKhSAaL0dIrfNp774NxRfHVPt9gGUugBZL7DcgfZVPgsKPxjBw" target="_blank" rel="noopener noreferrer">
+            <div class="contactTitle">MAX</div>
+            <div class="contactValue">Открыть профиль</div>
+            <div class="contactHint">Если удобнее общаться через MAX.</div>
+          </a>
+
+          <a class="contactCard" href="mailto:Palagin.nikita2016@gmail.com">
+            <div class="contactTitle">Почта</div>
+            <div class="contactValue">Palagin.nikita2016@gmail.com</div>
+            <div class="contactHint">Для вопросов, связи и обратной связи по сервису.</div>
+          </a>
+        </div>
       </div>
     </section>
 
